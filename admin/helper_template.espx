@@ -1,0 +1,130 @@
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<h3>Form for <a href='helper_templates'>Helper Templates</a></h3>
+<# start list for helper_templates_categories;
+	sort by display_order;
+	save to snippets.category_list;
+	include when active is "1";
+#>
+<# start header #>
+	<option value="">Select one</option>
+<# end header #>
+<# start row #>
+	<option value="<# id #>"><# name #></option>
+<# end row #>
+<# end list #>
+
+<# start form for helper_templates <#[url.edit]#>;
+	when deleting call confirm('Confirm Delete?');
+	when done redirect to "/admin/helper_templates";
+	when creating set created_by to "<#[session.user_email]#>";
+	when updating set updated_by to "<#[session.user_email]#>";
+#>
+
+<div>
+	Name<br />
+	<input class="form-control" type='text' style='width:220px;' <# name #> /><br />
+</div>
+
+<div style='margin-top:10px;'>
+	Content<br />
+	<pre id="snippet_content" name="snippet_content" style="height:300px;"></pre>
+	<input class="form-control" type='hidden' style='width:220px;' id="helper_content" <# content #> /><br />
+</div>
+
+<div style='margin-top:10px;'>
+	Category<BR>
+	<div class="pull-left"><select class="form-control" id="category_id" onchange="loadHelperTypes();" <# category #>>
+	<#[snippets.category_list]#>
+	</select>
+	</div>
+	<div class="pull-right"><a href="helper_templates_category" class="btn-sm btn-primary">Add New Category</a></div>
+</div><br/>
+<br>
+<div style='margin-top:10px;'>
+	Active
+	<select class="form-control" style="width:25%" <# active #> required>
+	<option value="1">True</option>
+	<option value="0">False</option>
+	</select>
+</div><br/>
+
+
+<div style='margin-top:10px;'>
+	Script Helper Type: 
+	<span id="helper_type_span"></span>
+	<select class="form-control" style="width:25%" id="helper_type" <# helper_type #> required>
+	<option value="both">Db and Sheet</option>
+	<option value="db">Db Only</option>
+	<option value="sheet">Spreadsheet Only</option>
+	</select>
+</div><br/>
+
+<div style='margin-top:10px;'>
+	Display Order
+	<input class="form-control" type="integer" min="0" required <# display_order #> /><br />
+</div>
+
+
+<div style='margin-top:8px; text-align:right;'>
+	<input type='button' class="btn btn-primary" <# Create button #> />
+	<input type='button' class="btn btn-primary" <# Update button #> />
+	<input type='button' class="btn btn-danger" <# Delete button #> />
+</div>
+
+<# end form #>
+
+<hr />
+
+<script src="/javascripts/ace-editor/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+function loadHelperTypes(){
+	var category_id = jQuery("#category_id").val();
+	jQuery.ajax({
+		type: "POST",
+		url: "noheader/helper_template_category_load?category_id=" + category_id
+	      }).done(function( msg ) {
+		console.log(msg);
+		if (msg.trim() == "" || msg.trim() == "both") {
+			jQuery("#helper_type").show();
+			jQuery("#helper_type_span").hide();
+		}else{
+			var result = msg.trim();
+			
+			if (result == "db") {
+				display_val = "Database";
+			}else if(result == "sheet"){
+				display_val = "Spreadsheet";
+			}
+			
+			jQuery("#helper_type").hide();
+			jQuery("#helper_type_span").html(display_val);
+			jQuery("#helper_type").val(result);
+			jQuery("#helper_type_span").show();
+		}
+	    });
+}
+
+jQuery(document).ready( function () {
+    loadHelperTypes();
+} );
+
+var editor = ace.edit("snippet_content");
+editor.setTheme("ace/theme/chrome");
+editor.session.setMode("ace/mode/html");
+
+editor.getSession().on('change', function(e) {
+    // e.type, etc
+    jQuery('#helper_content').val(editor.getValue());
+});
+
+jQuery( document ).ready(function() {
+	editor.setValue(jQuery('#helper_content').val());
+	editor.moveCursorTo(0,0);
+	jQuery( "#snippet_content" ).resizable();
+});
+
+jQuery( "#snippet_content" ).resizable({
+  resize: function( event, ui ) {editor.resize();}
+});
+</script>

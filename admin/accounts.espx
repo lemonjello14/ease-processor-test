@@ -1,0 +1,68 @@
+<h3>List of all <a href='?'>Accounts</a></h3>
+
+<# start list for accounts;
+	include when user_uuid is "<#[url.user_uuid]#>" if set;
+#>
+
+<# start header #>
+<table class="table" id="accounts_table">
+	<thead>
+	<tr style='font-size:12pt;'>
+		<th>Name<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to edit)</span></th>
+		<th>Created On</th>
+		<th>Domain</th>
+		<th>Activated?</th>
+		<th>Action</th>
+	</tr>
+	</thead>
+<# end header #>
+
+<# start row #>
+	<tr>
+		<td><a href='account?edit=<# id #>'><# name as html #></a></td>
+		<td><?php echo date("m/d/Y h:i:s A",strtotime(ease_get_value('accounts.created_on'))); ?></td>
+		<td><# domain as html #></td>
+		<td>
+			<# if("<# gapp_access_token_json #>"!="") {
+				Yes
+			} else {
+				No
+			} #>
+		</td>
+		<td>
+			<# if("<# gapp_access_token_json #>"=="") {
+				<a href='<#[system.https_host]#>/account_init?id=<# id #>&state=/account/accounts' class="btn btn-sm btn-success"><i class="fa fa-toggle-on"></i> activate</a>
+			}  #>
+			<a href='snippet?account_id=<# id #>' class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> add snippet</a>
+			<a href='snippets?account_id=<# id #>' class="btn btn-sm btn-primary"><i class="fa fa-list"></i> list snippets</a>
+			<a href='account_delete?id=<# id #>'  class="btn btn-sm btn-danger" onclick="return confirm('Confirm Delete?');"><i class="fa fa-times"></i> delete</a>
+		</td>
+	</tr>
+<# end row #>
+
+<# start footer #>
+</table>
+<# end footer #>
+
+<# no results #>
+<hr />No Accounts
+<# end no results #>
+
+<# end list #>
+
+<hr />
+
+<a href='account'>Form for adding a new Account</a><br />
+<a href='snippet'>Form for adding a New Snippet</a><br />
+<a href='snippets'>List of all Snippets</a><br />
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#accounts_table').DataTable({"columns": [
+	  null,
+	  null,
+	  null,
+	  null,
+	  { "orderable": false, "searchable": false }
+	]});
+} );
+</script>

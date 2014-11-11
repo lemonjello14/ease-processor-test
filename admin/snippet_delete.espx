@@ -1,0 +1,5 @@
+<# restrict access to admins using admin_auth #>
+
+<# delete record for "snippets.<#[url.id]#>"; 
+	redirect to "/admin/snippets?index=<#[url.index]#>";
+#>

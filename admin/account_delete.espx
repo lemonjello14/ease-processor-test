@@ -1,0 +1,5 @@
+<# restrict access to admins using admin_auth #>
+
+<# delete record for "accounts.<#[url.id]#>"; 
+	redirect to "/admin/accounts?index=<#[url.index]#>";
+#>

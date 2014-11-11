@@ -1,0 +1,56 @@
+<div class="container container_body">
+	<h3>Snippet Templates</h3>
+	<div class="mt10 mb20">This is a list of Snippet Templates that are available for the user to choose to clone into their account.</div>
+	
+	<a href='edit_store_template?templateid=0' class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp; Add a New Template</a><br />
+	<# start list for snippet_templates;
+	
+	#>
+
+	<# start header #>
+	<table class="table" id="snippets_table">
+		<thead>
+			<tr style='font-size:12pt;'>
+				<th>Name<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to edit)</span></th>
+				<th>Created On</th>
+				<th style="text-align:center;">Snippet Count</th>
+				<th style="text-align:center;">User Count</th>
+				<th style="text-align:center;">Status</th>
+			</tr>
+		</thead>
+	<# end header #>
+
+	<# start row #>
+		<tr style='font-size:12pt;'>
+			<td><a href="edit_store_template?templateid=<# id #>"><# name as html #></a></td>
+			<td><?php echo date("m/d/Y h:i:s A",strtotime(ease_get_value('snippet_templates.created_on'))); ?></td>
+			<td style="text-align:center;"><# snippet_count #></td>
+			<td style="text-align:center;"><# user_count #></td>
+			<td style="text-align:center;"><# status #></td>
+		</tr>
+	<# end row #>
+
+	<# start footer #>
+	</table>
+	<# end footer #>
+
+	<# no results #>
+	<hr />No Snippet Templates
+	<# end no results #>
+
+	<# end list #>
+
+	<hr />
+	
+	
+</div>
+
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#snippets_table').DataTable({"columns": [
+	  null,
+	  null,
+	  null
+	]});
+} );
+</script>

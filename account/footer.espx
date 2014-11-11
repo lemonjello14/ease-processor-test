@@ -1,0 +1,70 @@
+</div>
+
+<div style="width:100%; overflow:hidden; padding:30px; font-family:Lato, Helvetica, Arial, sans-serif; font-size:15px;">
+	<footer class="footer center" id="footer"  style="display:block">
+		<div class="navFooter wrapper-global" >
+			<nav>
+				<ul style="padding-left:0px;">
+					<li><a href="http://www.cloudward.com/support">Support</a></li>
+					<li><a href="http://www.cloudward.com/?page=webarticle&aid=031d30538bf1bd317b7e3bda0c590391">Privacy Policy</a></li>
+					<li><a href="http://www.cloudward.com/?page=webarticle&aid=05d8320470f98b9c751adeaa7e3e2aa9">Terms of Service</a></li>
+				</ul>
+			</nav>
+		</div>
+		<p class="copyrights center">Copyright <#[system.year]#> Cloudward, Inc. All Rights Reserved.<br>
+		For US Merchant Accounts, Cloudward Inc. is a registered ISO of Wells Fargo Bank, N.A., Walnut Creek, CA</p>
+	</footer>
+</div>
+
+<?php
+
+// ensure a state variable is set for use in the Google OAuth callback
+if((!isset($_SESSION['state'])) || !$_SESSION['state']) {
+    $_SESSION['state'] = md5(rand());
+}
+
+?>
+
+<script type='text/javascript'>
+	function signInCallback(authResult) {
+		if(authResult['error']!="user_signed_out" && authResult['error']!='immediate_failed') {
+			jQuery("#restricted").html("Logging you in, please wait...");
+			if(authResult['code']) {
+				// Hide the sign-in button now that the user is authorized, for example:
+				$('#signinButton').attr('style', 'display: none');
+				// Send the code to the server
+				$.ajax({
+					type: 'POST',
+					data: {authResult: authResult['code'],state_code: "<#[session.state as html]#>"},
+					url: 'plus.php?storeToken',
+					success: function(result) {
+						// Handle or verify the server response if necessary.
+						// Prints the list of people that the user has allowed the app to know
+						// to the console.
+						//console.log(result);
+						//if(result['profile'] && result['people']){
+						//  $('#results').html('Hello ' + result['profile']['displayName'] + '. You successfully made a server side call to people.get and people.list');
+						//} else {
+						//  $('#results').html('Failed to make a server-side call. Check your configuration and console.');
+						//}
+						var redirect_page = "/account/";
+						if("<#[url.restricted_page as html]#>"!="") {
+							redirect_page = "<#[url.restricted_page as html]#>";
+						}
+						window.location = redirect_page;
+					}
+				});
+			} else if(authResult['error']!="user_signed_out" && authResult['error']!='immediate_failed') {
+				jQuery("#restricted").html("Sorry, there was an error logging you in");
+				// There was an error.
+				// Possible error codes:
+				//   "access_denied" - User denied access to your app
+				//   "immediate_failed" - Could not automatially log in the user
+				// console.log('There was an error: ' + authResult['error']);
+			}
+		}
+	}
+</script>
+
+</body>
+</html>

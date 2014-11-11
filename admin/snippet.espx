@@ -1,0 +1,218 @@
+<h3>Form for <a href='snippets'>Snippets</a></h3>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
+<# start list for helper_templates;
+	sort by display_order;
+	save to snippets.content_list;
+	include when active is "1";
+#>
+<# start header #>
+	var script_objects = {};
+<# end header #>
+<# start row #>
+
+	script_objects["<?php echo ease_get_value('helper_templates.id'); ?>"] = <?php echo json_encode(ease_get_value('helper_templates.content'),JSON_HEX_APOS); ?>;
+      
+<# end row #>
+<# start footer #>
+<# end footer #>
+<# no results #>
+	jQuery( document ).ready(function() {
+		jQuery("#helper_script_load").hide();
+	});
+<# end no results #>
+<# end list #>
+
+<script type="text/javascript">
+          function toggleScriptHelper(helper_type){
+	jQuery.ajax({
+		type: "POST",
+		url: "nh/helper_template_category_load?category_id=" + helper_type
+	      }).done(function( msg ) {
+      
+		jQuery(".content-" + helper_type + "-one").html(msg);
+	       jQuery(".content-" + helper_type + "-one").slideToggle();
+	    });
+          }
+</script>
+
+<style type="text/css" media="screen">
+	ins { color: green; }
+	del { color: red; }
+	#myRevisionModal .modal-dialog { width: 80%; }
+	.diff td {
+		padding:0 0.667em;
+		vertical-align:top;
+		white-space:pre;
+		white-space:pre-wrap;
+		font-family:Consolas,'Courier New',Courier,monospace;
+		font-size:0.75em;
+		line-height:1.333;
+	}
+	.diff span {
+		display:block;
+		min-height:1.333em;
+		margin-top:-1px;
+		padding:0 3px;
+	}
+	* html .diff span {
+		height:1.333em;
+	}
+	.diff span:first-child {
+		margin-top:0;
+	}
+	.diffDeleted span {
+		border:1px solid rgb(255,192,192);
+		background:rgb(255,224,224);
+	}
+	.diffInserted span {
+		border:1px solid rgb(192,255,192);
+		background:rgb(224,255,224);
+	}
+	#toStringOutput {
+		margin:0 2em 2em;
+	}
+	.ace_editor {
+		position: relative !important;
+		border: 1px solid lightgray;
+		margin: auto;
+		height: 80%;
+		width: 100%;
+		vertical-align: top;
+	}
+	.ace_editor.fullScreen {
+		height: auto;
+		width: auto;
+		border: 0;
+		margin: 0;
+		position: fixed !important;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 10;
+		background: white;
+	}
+	.fullScreen {
+		overflow: hidden
+	}
+	.scrollmargin {
+		height: 80%;
+		text-align: center;
+	}
+	.large-button {
+		color: lightblue;
+		cursor: pointer;
+		font: 30px arial;
+		padding: 20px;
+		text-align: center;
+		border: medium solid transparent;
+		display: inline-block;
+	}
+	.large-button:hover {
+		border: medium solid lightgray;
+		border-radius: 10px 10px 10px 10px;
+		box-shadow: 0 0 12px 0 lightblue;
+	}
+</style>
+<# start list for accounts;
+	sort by domain, name;
+	save to account.options;
+#>
+<# start row #>
+<# if("<#[url.account_id]#>"=="<# id #>") {
+<option value="<# id #>" selected><# domain as html #> :: <# name as html #></option>
+} else {
+<option value="<# id #>"><# domain as html #> :: <# name as html #></option>
+}
+#>
+<# end row #>
+<# end list #>
+
+<# if("<#[url.account_id]#>"!="") { #>
+	 <a href="snippets?account_id=<#[url.account_id]#>"><< Back to Snippets for this account</a><br /><br />
+<# } #>
+
+<# start form for snippets <#[url.edit]#>;
+	set form.class to "form-horizontal";
+	when creating set hits to "0";
+	when creating set sortorder to "0";
+	when creating set templateid to "";
+	when deleting call confirm('Confirm Delete?');
+	when deleting redirect to "/admin/snippets?account_id=<# form.account_id #>";
+	when done redirect to "/admin/snippet?edit=<# form.id #>&account_id=<# form.account_id #>";
+#>
+<div class="form-group">
+	<div class="col-sm-2 control-label">Snippet Name</div>
+	<div class="col-sm-4">
+		<input type="text" class="form-control" <# name #> required style="width:300px;" />
+	</div>
+	
+	<div class="col-sm-2 control-label">Account</div>
+	<div class="col-sm-4">
+		<select class="form-control" style="width:300px;" <# account_id #> required><option value=''>Choose an Account</option><#[account.options]#></select>
+	</div>
+</div>
+<div class="form-group">
+	<div class="col-sm-2 control-label">EASE Snippet<br><br><a href="#" class="btn-sm btn-primary" id="helper_script_load" onclick="loadHelpers();return false;">Helper Scripts</a><BR><BR></div>
+	<div class="col-sm-10">
+	<pre id="snippet_content" name="snippet_content" style="height:320px;"></pre>
+	<span style='display:none'><textarea id="ease_snippet_content" <# ease_snippet #> style="width:720px; height:360px;"></textarea></span>
+	</div>
+</div>
+
+<div class="form-group">
+	<div class="col-sm-2 control-label">Status</div>
+	<div class="col-sm-2">
+		<select class="form-control" style="width:100px;" <# status #> required>
+			<option value='active'>Active</option>
+			<option value='inactive'>Inactive</option>
+		</select>
+	</div>
+	<div class="col-sm-2 control-label">Use for Store Template?</div>
+	<div class="col-sm-2">
+		<select class="form-control" style="width:100px;" <# cloneable #> required>
+			<option value='false'>False</option>
+			<option value='true'>True</option>
+		</select>
+	</div>
+	<div class="col-sm-4 text-right">
+		<input type="button" class="btn btn-primary" <# Create button #> />
+		<input type="button" class="btn btn-primary" <# Update button #> />
+		<input type="button" class="btn btn-danger" <# Delete button #> />
+		<# if("<#[url.edit]#>"!="") {
+			<a href='snippet_test?cloudward_snippet_id=<#[url.edit as html]#>&account_id=<#[url.account_id]#>&test=blah' class="btn btn-primary"><i class="fa fa-play"></i> Test this Snippet</a><br />
+		} #>
+	</div>
+</div>
+
+<# end form #>
+
+
+<hr />
+
+<a href='snippets'>List of all Snippets</a><br />
+<a href='accounts'>List of all Accounts</a><br />
+<a href='account'>Form for adding a new Account</a><br />
+<script src="/javascripts/ace-editor/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var editor = ace.edit("snippet_content");
+editor.setTheme("ace/theme/chrome");
+editor.session.setMode("ace/mode/html");
+
+editor.getSession().on('change', function(e) {
+    // e.type, etc
+    jQuery('#ease_snippet_content').val(editor.getValue());
+});
+
+jQuery( document ).ready(function() {
+	editor.setValue(jQuery('#ease_snippet_content').val());
+	editor.moveCursorTo(0,0);
+	jQuery( "#snippet_content" ).resizable();
+});
+
+jQuery( "#snippet_content" ).resizable({
+  resize: function( event, ui ) {editor.resize();}
+});
+</script>

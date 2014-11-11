@@ -1,0 +1,52 @@
+<div class="container container_body">
+	<h3>Helper Script Templates Categories</h3>
+	<div class="mt10 mb20">This is a list of helper script categories that a user can use to build templates.</div>
+<# start list for helper_templates_categories;
+#>
+
+<# start header #>
+<table class="table" id="scripts_categories_table">
+	<thead>
+	<tr style='font-size:12pt;'>
+		<th>Template Category Name</th>
+		<th>Created on</th>
+		<th>Display Order</th>
+		<th>Active</th>
+		<th>Last Updated By</th>
+		<th>Last Updated On</th>
+	</tr>
+	</thead>
+<# end header #>
+
+<# start row #>
+	<tr>
+		<td><a href='helper_templates_category?edit=<# id #>'><# name as html #></a></td>
+		<td><# created_on #></td>
+		<td><# display_order #></td>
+		<td><# active #>
+		</td>
+		<td><# updated_by #></td>
+		<td><# updated_on #></td>
+	</tr>
+<# end row #>
+
+<# start footer #>
+</table>
+<# end footer #>
+
+<# no results #>
+<hr />No Helper Scripts
+<# end no results #>
+
+<# end list #>
+
+<hr />
+
+<a href='helper_templates_category'>Form for adding a new Helper Script Category</a><br />
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#scripts_categories_table').DataTable();
+} );
+</script>
+	
+</div>

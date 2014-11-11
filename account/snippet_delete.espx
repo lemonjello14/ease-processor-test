@@ -1,0 +1,22 @@
+<# include "header_include.espx"; #>
+<div class="container container_body">
+	<# start list for snippets;
+		relate account_id to accounts.uuid;
+		include when accounts.user_uuid is "<#[session.user_id]#>";
+		include when uuid is "<#[url.id]#>";
+		show 15 rows per page;
+	#>
+	<# start row #>
+	    <# delete record for "snippets.<#[url.id]#>"; 
+	            redirect to "/account/snippets?account_id=<#[url.account_id]#>";
+	    #>
+	<# end row #>
+	<# no results #>
+	    <?php
+	    echo "You do not have access to this snippet";
+	    exit;
+	    ?>
+	<# end no results #>
+	<# end list #>
+</div>
+<section class="section-blue-divider"></section>

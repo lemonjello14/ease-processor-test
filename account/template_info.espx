@@ -1,0 +1,14 @@
+<# apply accounts.<#[url.account_id]#> as "account"; #>
+<# apply snippet_templates.<#[url.template_id]#> as "template"; #>
+<div class="container container_body">
+	<ol class="breadcrumb">
+		<li><a href="/account/">My Account</a></li>
+		<li><a href="new_snippet?account_id=<#[url.account_id]#>">New Snippet</a></li>
+		<li><a href="snippet_store?account_id=<#[url.account_id]#>">Snippet Store</a></li>
+		<li>More Info</li>
+		<li><a href="template_preview?template_id=<#[url.template_id]#>&account_id=<#[url.account_id]#>">Snippet Preview</a></li>
+	</ol>
+	<h3>More info about "<#[template.name]#>"</h3>
+	<div class="mt10 mb20"></div>
+		
+</div>

@@ -1,0 +1,55 @@
+<div class="container container_body">
+	<h3>Helper Script Templates</h3>
+	<div class="mt10 mb20">This is a list of helper scripts that a user can use to build templates.</div>
+<# start list for helper_templates;
+	include when user_uuid is "<#[url.user_uuid]#>" if set;
+#>
+
+<# start header #>
+<table class="table" id="scripts_table">
+	<thead>
+	<tr style='font-size:12pt;'>
+		<th>Template Display Name</th>
+		<th>Created on</th>
+		<th>Display Order</th>
+		<th>Active</th>
+		<th>Last Updated By</th>
+		<th>Last Updated On</th>
+	</tr>
+	</thead>
+<# end header #>
+
+<# start row #>
+	<tr>
+		<td><a href='helper_template?edit=<# id #>'><# name as html #></a></td>
+		<td><# created_on #></td>
+		<td><# display_order #></td>
+		<td><# active #>
+		</td>
+		<td><# updated_by #></td>
+		<td><# updated_on #></td>
+	</tr>
+<# end row #>
+
+<# start footer #>
+</table>
+<# end footer #>
+
+<# no results #>
+<hr />No Helper Scripts
+<# end no results #>
+
+<# end list #>
+
+<hr />
+
+<a href='helper_template'>Form for adding a new Helper Script</a><br />
+<a href='helper_templates_categories'>List of Helper Script Categories</a><br />
+<a href='helper_templates_category'>Form for adding a new Helper Script Category</a><br />
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#scripts_table').DataTable();
+} );
+</script>
+	
+</div>

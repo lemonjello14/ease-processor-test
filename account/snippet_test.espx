@@ -1,0 +1,48 @@
+<# include "header_include.espx"; #>
+<div class="container container_body">
+	<# start list for snippets;
+		relate account_id to accounts.uuid;
+		include when accounts.user_uuid is "<#[session.user_id]#>";
+		include when uuid is "<#[url.cloudward_snippet_id]#>";
+		show 15 rows per page;
+	#>
+	<# no results #>
+	    <?php
+	    echo "You do not have access to this snippet";
+	    exit;
+	    ?>
+	<# end no results #>
+	<# end list #>
+	<# apply snippets.<#[url.cloudward_snippet_id]#> as "snippet"; #>
+
+	<h3>Testing Snippet "<a href='snippet?edit=<#[url.cloudward_snippet_id as html]#>'><#[snippet.name as html]#></a>"</h3>
+
+	<hr />
+
+	<div id='my_div'></div>
+	<script type="text/javascript">
+		var ease_processor_response_element_id = 'my_div';
+		document.write(unescape("%3Cscript src='<#[system.https_host]#>/process?"
+		 + "ease_processor_snippet_id=<#[url.ease_processor_snippet_id as url]#>&"
+		 + window.location.search.split("?")[1] + "' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+
+	<hr />
+
+	Processed this HTML Snippet: <pre class='code' style='tab-size:4;'>&lt;div id='my_div'&gt;&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+	var ease_processor_response_element_id = 'my_div';
+	document.write(unescape("%3Cscript src='<#[system.https_host]#>/process?"
+	 + "cloudward_snippet_id=<#[url.cloudward_snippet_id as url]#>&"
+	 + window.location.search.split("?")[1] + "' type='text/javascript'%3E%3C/script%3E"));
+&lt;/script&gt;</pre>
+
+	<hr />
+
+	The External EASE Processor will process this EASE Snippet: <pre class='code'><#[snippet.ease_snippet as pre]#></pre>
+
+	<hr />
+	<a href='snippet?edit=<#[url.cloudward_snippet_id as html]#>&account_id=<#[url.account_id]#>' class="btn btn-primary"><i class="fa fa-code"></i> Edit this Snippet</a><br />
+
+</div>
+<section class="section-blue-divider"></section>

@@ -1,0 +1,94 @@
+<div class="container container_body">
+	<ol class="breadcrumb">
+		<li><a href="/account/">My Account</a></li>
+		<li><a href="new_snippet?account_id=<#[url.account_id]#>">New Snippet</a></li>
+		<li><a href="snippet_store?account_id=<#[url.account_id]#>">Snippet Store</a></li>
+		<li>Cart</li>
+	</ol>
+
+	<div class="panel panel-default">
+	    <div class="panel-heading">Your Shopping Cart</div>
+	        <div class="panel-body">
+
+	        	<div><strong><#[url.message]#></strong></div>
+		        <# start list for cart;
+		            include when orderid = "<#[session.orderid]#>";
+		        #>
+        
+		        <# start header #>
+		        <div class="table-responsive" >
+		        <table class="table table-bordered">
+					<thead>
+		        	<tr class="info">
+		        		<th style="width:20px" class="info"></th>
+		        		<th class="info">Item</th>
+						<th class="info">Sku</th>
+		        		<th class="info" style="text-align: center; width:120px">Qty</th>
+		        		<th class="info" style="text-align: center; width:80px">Price</th>
+		        		<th class="info" style="text-align: center ;width:80px">Total</th>
+		        	</tr>
+					</thead>
+					<tbody>
+		        <# end header #>
+		        <# start row #>
+		            <# 
+		                set <# item_total #> to <# qty as number #> * <# price as number #>;
+		                set <# overall_total #> to <# overall_total #> + <# item_total #>;
+		            #>
+		        	<tr>
+		        		<td>
+		        			<center>
+		        				<a href="/account/nh/remove_cart_item?cartid=<# uuid #>" onclick="return confirm('Remove this item from your cart?')">
+		        				    <span class="fa fa-remove" style="color:red;"></span>
+								</a>
+		        			</center>
+		        		</td>
+		        		<td><# product_name #></td>
+						<td><# sku #></td>
+		        		<td  style="text-align: center;"><# qty #></td>
+		        		<td  style="text-align: center;">$ <# price #> </td>
+		        		<td  style="text-align: center;">
+		        			<# item_total as dollars #>
+		        		</td>
+		        	</tr>
+		        <# end row #>
+		        <# start footer #>
+	        		<tbody>
+		        	<tr>
+		        		<td colspan="3" style="border-right-width: 0;">&nbsp;</td>
+		        		<td>
+		        			<input type="button" value="Keep Shopping" class="btn btn-default" style="width:120px;" onclick="window.location = '/account/snippet_store.espx';">
+		        		</td>
+		        		<td>&nbsp;</td>
+		        		<td>&nbsp;</td>
+		        	</tr>
+		        	<tr>
+		        		<td colspan="3" style="border:none;"></td>
+		        		<td style="border-top-width: 0;">
+		        			<input type="button" value="Checkout" class="btn btn-info" style="width:120px;" onclick="window.location = '/account/nh/order_totals'">
+		        		</td>
+		        		<td >Total </td>
+		        		<td  style="text-align: center;">
+		        			<# overall_total as dollars #>
+		        		</td>
+		        	</tr>
+					<tbody>
+		        </table>
+		        </div>
+		        <# end footer #>
+		        <# no results #>
+		            <center>&nbsp;<br>
+		            <div style="width: 95%:padding: 10px;margin-left: auto;margin-right: auto;margin-top: 10%;text-align: center;margin-bottom: 40px;">
+		            	<span>
+		            		You have no items in your cart at this time.<br> Click the "Keep Shopping" button to add items into your cart.
+		            	</span>
+		            </div>	
+		            <input type="button" value="Keep Shopping" class="cartbutton" onclick="window.location = '/account/snippet_store.espx';">
+		            </center>
+		         <# end no results #>
+		        <# end list #>
+	      </div>
+	</div>
+</div>
+
+<section class="section-blue-divider"></section>

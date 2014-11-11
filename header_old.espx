@@ -1,0 +1,67 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/Article">
+<head>
+	<meta name="google-site-verification" content="ZrVPowzuAEBsRQvLX9MsTRkP6fIeVYB7TJMLjMdl5As" />
+	<title>EASE Processor</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+	<script src="javascripts/bootstrap.js"></script>
+	<link href="stylesheets/bootstrap.css" rel="stylesheet">
+	<link href="stylesheets/font-awesome-4-2-0.css" rel="stylesheet">
+	<link href="stylesheets/style.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/dataTables.bootstrap.css">
+	<script type="text/javascript" charset="utf8" src="/javascripts/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf8" src="/javascripts/dataTables.bootstrap.js"></script>
+</head>
+<body>
+
+<div class="" id="top_container">
+	<div id="header_container" style="background-color:white; width:100%;">
+		<header class="header wrapper-global clearfix" style="background-color:white;">
+			<div class="container">
+				<a class="logo" href="http://www.cloudward.com"><img style="padding-top:12px" src="images/cloudward_logo.png" alt="Cloudward"></a>
+			</div>
+			<div class="navUser clearfix">
+				<span class="pull-right">
+					<nav>
+						<ul>
+							<li class="navUser-register"><a href="http://www.cloudward.com">Cloudward</a></li>
+							<li class="navUser-register" ><a href="http://www.cloudward.com/support">Support</a></li>
+						</ul>
+					</nav>
+				</span>
+				<div class="navMain clearfix">
+					<nav>
+						<ul class="nav nav-tabs" role="tablist" style="border-bottom:0px">
+							<li><a href='/'>Home</a></li>
+							<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Accounts <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<a href='/accounts'>List All</a>
+									<a href='/account'>Create New</a>
+								</ul>
+							</li>
+							<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Snippets <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<a href='/snippets'>List All</a>
+									<a href='/snippet'>Create New</a>
+								</ul>
+							</li>
+<?php
+
+if(isset($_SESSION['ease_memberships.admins']) && $_SESSION['ease_memberships.admins']=='unlocked') {
+	echo "							<li><a href='/admin'>Admin Console</a></li>";
+}
+if(isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user']) {
+	echo "							<li><a href='/logout.php'>Logout</a></li>";
+}
+
+?>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</header>
+	</div>
+</div>
+
+<div id="main_container" class="container" style="min-height:600px; height:auto !important;">

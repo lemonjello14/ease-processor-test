@@ -1,0 +1,56 @@
+<# start list for snippets;
+	relate account_id to accounts.uuid;
+	include when accounts.user_uuid is "<#[session.user_id]#>";
+#>
+<# start row #>
+		<# 
+			set <# hitcount #> to <# hitcount #> + <# hits as number #>;
+			set <# snipcount #> to <# snipcount #> + 1;
+		#>
+<# end row #>
+<# start footer #>
+		<# 
+			set my.hitcount to "<# hitcount #>";
+			set my.snipcount to "<# snipcount #>";
+		#>
+<# end footer #>
+<# end list #>
+
+<div class="container container_body">
+	<h3>My Profile</h3>
+	
+	<ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#sectionA">My Profile</a></li>
+		<li><a data-toggle="tab" href="#sectionB">Billing History</a></li>
+        <li><a data-toggle="tab" href="#sectionC">Pricing</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="sectionA" class="tab-pane fade in active">
+            <!--h3>My Profile and Payment Settings</h3-->
+			<div class="panel panel-default">
+				<div class="panel-body">
+            		<h3 style="padding-bottom:15px;">Free “Early Look” Subscription*</h3>
+
+					<h5 style="padding-bottom:10px;">
+					You have a Free “Early Look” Subscription of Cloudward Snippets. As one of the early adopters of Cloudward Snippets this account is for trial and evaluation purposes only. This account is not for production use and should be considered “Beta” software. Cloudward reserves the right to change the terms of service at anytime. In the future, we will upgrade this account to a Free Subscription or you may choose one of our paid plans. By use of this account, you are subject to our Terms of Service.
+					</h5>
+
+					<h4 style="padding-bottom:15px;">Your current Snip count is:  <#[my.snipcount]#> Snippets. Your Hit count is: <#[my.hitcount]#></h4>
+
+					<h4><small>*Limited time account offer, terms subject to change</small></h4>
+
+				</div>
+			</div>
+        </div>
+        <div id="sectionB" class="tab-pane fade">
+            <h3>Billing History</h3>
+            <p>Information Coming Soon</p>
+        </div>
+        <div id="sectionC" class="tab-pane fade">
+            <h3>Pricing</h3>
+            <p>Information Coming Soon</p>
+        </div>
+    </div>
+
+</div>
+<section class="section-blue-divider"></section>

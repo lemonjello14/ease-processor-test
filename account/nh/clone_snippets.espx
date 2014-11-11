@@ -1,0 +1,105 @@
+<?php
+//make sure we have an orderid
+$orderid = ease_get_value("session.orderid");
+if (! $orderid) {
+	header("Location: /account/snippet_store");
+	exit;
+}
+
+$user_id = ease_get_value("session.user_id");
+
+//get all templates in this order
+$sql = "SELECT * FROM cart WHERE orderid=:orderid;";
+$params = array(':orderid'=>$orderid);
+$templates = ease_db_query_params($sql, $params);
+$r1 = ease_db_fetch_all($templates);
+foreach($r1 as $cart) {
+	$cartid =  $cart['uuid'];
+	$templateid = $cart['storeid'];
+	$accountid = $cart['accountid'];
+	
+	//get list of all snippets in template
+	$sql2 = "SELECT snippet_template_ids.*, snippets.name, snippets.ease_snippet FROM snippet_template_ids 
+		JOIN snippets on snippet_template_ids.snippet_id = snippets.uuid
+		WHERE template_id=:templateid ";
+	$params2 = array(':templateid'=>$templateid);
+	$snippets = ease_db_query_params($sql2, $params2);
+	$rs = ease_db_fetch_all($snippets);
+	foreach($rs as $snippet) {
+		$snippetid = $snippet['snippet_id'];
+		$snippetname = $snippet['name'];
+		$ease_snippet = $snippet['ease_snippet'];
+		$sortorder = $snippet['sortorder'];
+		//create a clone of this snippet in the users account
+		$newid = ease_db_create_instance("snippets");
+		$sql3 = "UPDATE snippets SET name=:snippetname, account_id=:accountid, ease_snippet=:ease_snippet, hits='0', templateid=:templateid, 
+				sortorder=:sortorder, status='active'
+			WHERE uuid=:newid ";
+		$params3 = array(':snippetname'=>$snippetname, ':accountid'=>$accountid, ':ease_snippet'=>$ease_snippet, ':newid'=>$newid, ':templateid'=>$templateid, ':sortorder'=>$sortorder );
+		$rsnip = ease_db_query_params($sql3, $params3);
+		
+		//create cloned_snippets record for each snippet created
+		$cloneid = ease_db_create_instance("cloned_snippets");
+		$sql4 = "UPDATE cloned_snippets SET original_snippetid=:snippetid, new_snippetid=:newid, orderid=:orderid, cid=:user_id, status='new' WHERE uuid=:cloneid ";
+		$params4 = array(':snippetid'=>$snippetid, ':newid'=>$newid, ':orderid'=>$orderid, ':user_id'=>$user_id, ':cloneid'=>$cloneid);
+		$rclone = ease_db_query_params($sql4, $params4);
+	}
+	// replace the snippet ids in the new snippets
+	//first get the list of snippets from cloned_snippets so we can look each of them up and update them.
+	$sql6 = "SELECT * FROM cloned_snippets WHERE orderid=:orderid and status='new';";
+	$params6 = array(':orderid'=>$orderid);
+	$clones6 = ease_db_query_params($sql6, $params6);
+	$r6 = ease_db_fetch_all($clones6);
+	
+	//for each cloned_snippets record with current orderid loop throuogh the new snippets and replace the original_snippetid with the new_snippetid
+	$sql5 = "SELECT * FROM cloned_snippets WHERE orderid=:orderid and status='new';";
+	$params5 = array(':orderid'=>$orderid);
+	$clones = ease_db_query_params($sql5, $params5);
+	$r5 = ease_db_fetch_all($clones);
+	foreach($r5 as $clone) {
+		$originalid = $clone['original_snippetid'];
+		$newsnipid = $clone['new_snippetid'];
+		$cloneid5 = $clone['uuid'];
+
+		foreach($r6 as $clone6) {
+			$snipid = $clone6['new_snippetid'];
+			$sql7 = "SELECT * FROM snippets WHERE uuid=:snipid";
+			$params7 = array(':snipid'=>$snipid);
+			$s7 = ease_db_query_params($sql7, $params7);
+			$rs7 = ease_db_fetch_all($s7);
+			foreach($rs7 as $snippet7) {
+				$dirtycode = $snippet7['ease_snippet'];
+				$cleancode = str_replace ( $originalid, $newsnipid, $dirtycode );
+				$sql8 = "UPDATE snippets SET ease_snippet=:cleancode WHERE uuid=:snipid ";
+				$params8 = array(':cleancode'=>$cleancode, ':snipid'=>$snipid);
+				$r8 = ease_db_query_params($sql8, $params8);
+			}
+		}
+		reset($r6);
+		
+		//update the clone item status to 'processed'
+		$sql9 = "UPDATE cloned_snippets SET status='processed' WHERE uuid=:cloneid5 ";
+		$params9 = array(':cloneid5'=>$cloneid5);
+		$rc9 = ease_db_query_params($sql9, $params9);
+	}
+		
+	// update the snippet_templates user_count
+	//get the current count.
+	$sql10 = "SELECT * FROM snippet_templates where uuid=:templateid";
+	$params10 = array(':templateid'=>$templateid);
+	$r10 = ease_db_query_params($sql10, $params10);
+	if($row = ease_db_fetch($r10)) {
+	    $newcount = ($row['user_count'] * 1) + 1;
+		$sql11 = "UPDATE snippet_templates SET user_count='$newcount' WHERE uuid=:templateid ";
+		$params11 = array(':templateid'=>$templateid);
+		$rc11 = ease_db_query_params($sql11, $params11);
+	}
+	
+	$sql12 = "UPDATE cart SET status='processed' WHERE uuid=:cartid ";
+	$params12 = array(':cartid'=>$cartid);
+	$rc12 = ease_db_query_params($sql12, $params12);
+}
+
+header("Location: /account/order_confirmation?orderid=$orderid");
+?>
+

@@ -1,0 +1,8 @@
+<# start list for helper_templates_categories;
+	sort by display_order;
+	include when uuid is "<#[url.category_id]#>";
+#>
+<# start row #>
+<# helper_type #>
+<# end row #>
+<# end list #>

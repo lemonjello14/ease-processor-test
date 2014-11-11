@@ -1,0 +1,19 @@
+<# redirect to "/account/index"; #>
+<section class="section-heading section-heading-home gradient-heading ie-gradient">
+	<div class="wrapper-global">
+		<div class="title-border">
+			<h1 class="title-main">EASE Snippets give you instant access to your <strong>Google Drive</strong> files</h1>
+		</div>
+		<h2 class="title-main-sub">Your ideas come alive on your current webpages</h2>
+		<div class="img-heading">
+			<img alt="Web Business with Snippets" src="images/cloudward_snippets.png">
+		</div>
+	</div>
+</section>
+<section class="section-white">
+	<div class="wrapper-global">
+		More content
+		<br><br><br><br><br><br><br>More content><br><br><br><br><br><br><br><br><br><br><br>More content
+	</div>
+</section>
+<section class="section-blue-divider"></section>

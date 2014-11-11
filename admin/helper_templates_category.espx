@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css" />
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<h3>Form for <a href='helper_templates'>Helper Template Categories</a></h3>
+
+
+<# start form for helper_templates_categories <#[url.edit]#>;
+	when deleting call confirm('Confirm Delete?');
+	when done redirect to "/admin/helper_templates_categories";
+	when creating set created_by to "<#[session.user_email]#>";
+	when updating set updated_by to "<#[session.user_email]#>";
+#>
+
+<div>
+	Category Name<br />
+	<input class="form-control" type='text' style='width:220px;' <# name #> /><br />
+</div>
+
+<div style='margin-top:10px;'>
+	Active
+	<select class="form-control" style="width:25%" <# active #> required>
+	<option value="1">True</option>
+	<option value="0">False</option>
+	</select>
+</div><br/>
+
+<div style='margin-top:10px;'>
+	Script Helper Type
+	<select class="form-control" style="width:25%" <# helper_type #> required>
+	<option value="both">Db and Sheet</option>
+	<option value="db">Db Only</option>
+	<option value="sheet">Spreadsheet Only</option>
+	</select>
+</div><br/>
+
+<div style='margin-top:10px;'>
+	Display Order
+	<input class="form-control" type="integer" min="0" required <# display_order #> /><br />
+</div>
+
+
+<div style='margin-top:8px; text-align:right;'>
+	<input type='button' class="btn btn-primary" <# Create button #> />
+	<input type='button' class="btn btn-primary" <# Update button #> />
+	<input type='button' class="btn btn-danger" <# Delete button #> />
+</div>
+
+<# end form #>
+
+<hr />

@@ -1,0 +1,12 @@
+<?php
+$i = 1;
+
+foreach ($_POST['item'] as $value) {
+    // Update sortorder for each item
+	$sql9 = "UPDATE snippet_template_ids SET sortorder='$i' WHERE uuid=:value ";
+	$params9 = array(':value'=>$value);
+	$rc9 = ease_db_query_params($sql9, $params9);
+    $i++;
+}
+echo "ok";
+?>

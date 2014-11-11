@@ -1,0 +1,20 @@
+<# if("<#[session.authenticated_user]#>"!="") { #>
+	Currently logged in as <#[session.authenticated_user]#><br /><br />
+
+	<# start list for accounts;
+		include when user_uuid is "<#[session.user_id]#>";
+		show 1 rows per page;
+		hide pager both;
+	#>
+
+	<# start header #>
+	<a href='/account/'>Manage your Accounts</a> or <a href='/account/new_snippet'>Create a Snippet</a>
+	<# end header #>
+
+	<# no results #>
+	<# redirect to "/account/account?get_started=true"; #>
+	<a href='/account/account?get_started=true'>To get started, you will need to create an account for a domain you own.  You will be redirected to the create account page shortly.</a>
+	<# end no results #>
+
+	<# end list #>
+<# } #>

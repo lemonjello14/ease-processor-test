@@ -1,0 +1,9 @@
+<?php
+//will need to add code here to update the order with the totals and then send the user to the payment page.
+
+$order_total = 0;
+if ($order_total == 0)
+{
+	header("Location: /account/nh/clone_snippets");
+}
+?>

@@ -1,0 +1,35 @@
+<# if("<#[request.password]#>"=="<#[config.admin_password]#>") {
+	grant access to admins;
+	redirect to "<#[url.restricted_page]#>";
+} #>
+
+<h3>Admin Authentication</h3>
+
+<div style='margin-top:7px; margin-bottom:3px;'>The page you requested has been restricted to Admins
+
+
+</div>
+
+<!--<form method='post' style='margin:10px; margin-top:11px;' action="?restricted_page=<#[url.restricted_page as url]#>">
+	Admin Password: 
+	<input type='password' name='password' />
+	<input type='submit' value='Authenticate' />
+</form>
+-->
+
+<!-- Add where you want your sign-in button to render -->
+
+<div id="signinButton">
+  <span class="g-signin"
+    data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"
+    data-clientid="70399099102-un9fuod0711t83f31arlh10m6ncg7fi1.apps.googleusercontent.com"
+    data-redirecturi="postmessage"
+    data-accesstype="offline"
+    data-cookiepolicy="single_host_origin"
+    data-callback="signInCallback">
+  </span>
+</div>
+<div id="result"></div>
+<?php
+session_start();
+var_dump($_SESSION); ?>

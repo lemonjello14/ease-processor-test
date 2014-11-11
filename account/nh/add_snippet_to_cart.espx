@@ -1,0 +1,69 @@
+<# include "header_include.espx"; #>
+<# apply users.<#[session.user_id]#> as "user"; #>
+<# apply snippet_templates.<#[url.template_id]#> as "template"; #>
+
+<# set session.orderid to "<#[user.orderid]#>"; #>
+
+<?php
+$template_id = ease_get_value("url.template_id");
+$account_id = ease_get_value("url.account_id");
+//if there is no snippet ID, send them back to the store.
+if (! $template_id) {
+	header("Location: /account/new_snippet?account_id=$account_id");
+	exit;
+}
+//if there is no accountid, send them to the page to choose an account
+if (! $account_id) {
+	header("Location: /account/template_purchase?template_id=$template_id");
+	exit;
+}
+
+//create an orderid if the user does not have one.
+$orderuuid = ease_get_value("user.orderid");
+if (!$orderuuid)
+{
+	$orderid =  uniqid("t");
+	$orderuuid = $this->core->new_uuid();
+	ease_set_value("user.orderid", $orderuuid);
+	ease_set_value("user.xorderid", $orderid);
+}
+
+?>
+
+<!--update the users record with the orderid-->
+<# update record for "users.<#[session.user_id]#>" reference as "user1";
+	set user1.orderid to "<#[user.orderid]#>";
+	set user1.xorderid to "<#[user.xorderid]#>";
+#>
+
+<!--Create an order record if one does not exist-->
+<# if( "<#[session.orderid]#>" == "" ) {
+		create new record for "orders" reference as "order";
+		set order.uuid to "<#[user.orderid]#>";
+		set order.created_on to "<#[system.date_time_short]#>";
+		set order.orderid to "<#[user.xorderid]#>";
+		set order.ordercid to "<#[session.user_id]#>";
+		set order.status to "cart";
+		
+		set session.orderid to "<#[user.orderid]#>";
+	}
+#>
+
+<!--Create a cart item for the template-->
+<# 
+    create new record for "cart" reference as "cart";
+    set cart.created_on to "<#[system.date_time_short]#>";
+    set cart.orderid to "<#[user.orderid]#>";
+    set cart.ordercid to "<#[session.user_id]#>";
+    set cart.storeid to "<#[request.template_id]#>";
+    set cart.orderstatus to "cart";
+    set cart.qty to "1";
+    set cart.product_name to "<#[template.name]#>";
+    set cart.price to "<#[template.price]#>";
+    set cart.sku to "<#[template.sku]#>";
+    set cart.total to "<#[template.price]#>";
+	set cart.accountid to "<#[url.account_id]#>";
+
+    redirect to "/account/cart?&product_name=<#[template.name]#>&account_id=<#[url.account_id]#>";
+#>
+

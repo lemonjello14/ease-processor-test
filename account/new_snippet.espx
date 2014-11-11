@@ -1,0 +1,41 @@
+<div class="container container_body">
+	<ol class="breadcrumb">
+	  <li><a href="/account/">My Account</a></li>
+	  <li>New Snippet</li>
+	</ol>
+	
+	<h3>Add a New Snippet</h3>
+	<div class="mt10 mb20">You can either select an existing Snippet which will be added into your account or create your own!</div>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Choose a Snippet</h3>
+				</div>
+				<div class="panel-body">
+					You can choose a Snippet that will work right out of the box 
+					with little or no customization necessary. Once you have the snippets in your account, you can customize them 
+					and then copy and paste them into your web page.
+					<br /><br />
+					<a href='snippet_store?account_id=<#[url.account_id]#>' class="btn btn-primary pull-right"><i class="fa fa-list"></i>&nbsp; Choose a Snippet</a><br />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Write my own Snippet</h3>
+				</div>
+				<div class="panel-body">
+					You can write you own snippet using EASE. Either use our super simple form and list builder, or use our script helper to quickly 
+					create a custom snippet that does exactly what you need it to do. Create the snippet, save it, test it, and then copy and paste them into your web page. 
+					<br /><br />
+					<a href='snippet?account_id=<#[url.account_id]#>' class="btn btn-primary pull-right"><i class="fa fa-code"></i>&nbsp; Create a Snippet</a><br />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="section-blue-divider"></section>

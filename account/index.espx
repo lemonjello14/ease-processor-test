@@ -1,0 +1,98 @@
+<div class="container container_body">
+	<h3>Welcome To Cloudward Snippets</h3>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">My Accounts</h3>
+		</div>
+		<div class="panel-body">	
+
+			<# start list for accounts;
+				include when user_uuid is "<#[session.user_id]#>";
+			#>
+
+			<# start header #>
+			<table class="table table-striped" id="accounts_table">
+				<thead>
+					<tr style='font-size:12pt;'>
+						<th>Name<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to edit)</span></th>
+						<th>Created On</th>
+						<th>Domain</th>
+						<th>Activated?</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			<# end header #>
+
+			<# start row #>
+				<tr>
+					<td><a href='/account/account?edit=<# id #>'><# name as html #></a></td>
+					<td><?php echo date("m/d/Y h:i:s A",strtotime(ease_get_value('accounts.created_on'))); ?></td>
+					<td><# domain as html #></td>
+					<td style='text-align:center;'>
+						<# if("<# gapp_access_token_json #>"!="") {
+							Yes
+						} else {
+							No
+						} #>
+					</td>
+					<td>
+						<# if("<# gapp_access_token_json #>"=="") {
+							<a href='<#[system.https_host]#>/account_init?id=<# id #>&state=/account/accounts' class="btn btn-sm btn-success"><i class="fa fa-toggle-on"></i> activate</a>
+						}  #>
+						<a href='new_snippet?account_id=<# id #>' class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add Snippet</a>
+						<a href='snippets?account_id=<# id #>' class="btn btn-sm btn-primary"><i class="fa fa-list"></i> List Snippets</a>
+						<a href='account_delete?id=<# id #>' onclick="return confirm('Confirm Delete?');" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> Delete</a>
+					</td>
+				</tr>
+			<# end row #>
+
+			<# start footer #>
+			</table>
+			<# end footer #>
+
+			<# no results #>
+			<hr />Click "+ Add New Account" to get started.
+			<# end no results #>
+
+			<# end list #>
+			
+			<?php
+				$userid = ease_get_value("session.user_id");
+				//see if we have any accounts if we do, see if we have any snippets yet
+				$sql1 = "SELECT * FROM accounts WHERE user_uuid=:userid ";
+				$params1 = array(':userid'=>$userid);
+				$ra = ease_db_query_params($sql1, $params1);
+				$rs = ease_db_fetch_all($ra);
+				if (! count($rs)) {
+					$sql2 = "SELECT * FROM snippets 
+						JOIN accounts on snippets.account_id = accounts.uuid
+						WHERE accounts.user_uuid=:userid ";
+					$params2 = array(':userid'=>$userid);
+					$ra2 = ease_db_query_params($sql2, $params2);
+					$rs2 = ease_db_fetch_all($ra2);
+					if (! count($rs2)) {
+						echo "<div class='alert alert-danger' role='alert'>Next step? Select '+ Add Snippet' to add snippets into your account.</div>";
+					}
+				}
+			?>
+
+			<hr />
+
+			<a href='account' class="btn btn-primary"><i class="fa fa-plus"></i> Add New Account</a><br />
+		</div>
+	</div>
+</div>
+<section class="section-blue-divider"></section>
+
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#accounts_table').DataTable({"columns": [
+	  null,
+	  null,
+	  null,
+	  null,
+	  { "orderable": false, "searchable": false }
+	]});
+} );
+</script>

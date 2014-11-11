@@ -1,0 +1,76 @@
+<# apply accounts.<#[url.account_id]#> as "account"; #>
+<# apply users.<#[session.user_id]#> as "user"; #>
+
+<# if( "<#[user.orderid]#>" != "" ) {
+		set session.orderid to "<#[user.orderid]#>";
+	}
+#>
+<div class="container container_body">
+	<ol class="breadcrumb">
+		<li><a href="/account/">My Account</a></li>
+		<li><a href="new_snippet?account_id=<#[url.account_id]#>">New Snippet</a></li>
+		<li>Snippet Store</li>
+		<# if ("<#[session.orderid]#>" != "") {
+			<li><a href="cart?account_id=<#[url.account_id]#>">Cart</a></li>
+		}
+		#>
+	</ol>
+	<h3>Choose a Snippet Template</h3>
+	<div class="mt10 mb20">The following EASE Snippet templates can be added to your "<#[account.name]#>" account. You can preview the snippet in action and then
+		when your ready to copy the template to your account, click the "Get Snippets" button.</div>
+
+	<# start list for snippet_templates;
+		include when status = "active";
+	#>
+
+	<# start header #>
+	<div class="table-responsive">
+	<table class="table table-striped" id="snippets_table">
+		<thead>
+			<tr style='font-size:12pt;'>
+				<th>Name</th>
+				<th>Description</th>
+				<th style="text-align:center;">Snippet Count</th>
+				<th></th>
+			</tr>
+		</thead>
+	<# end header #>
+
+	<# start row #>
+		<tr style='font-size:12pt;'>
+			<td width="25%"><# name as html #></td>
+			<td width="40%"><# description as html #></td>
+			<td style="text-align:center;"><# snippet_count #></td>
+			<td style="text-align:center;" nowrap>
+				<!--a href='template_info?template_id=<# id #>&account_id=<#[url.account_id]#>' class="btn btn-sm btn-primary"><i class="fa fa-info"></i>&nbsp; More Info</a>
+				<a href='template_preview?template_id=<# id #>&account_id=<#[url.account_id]#>' class="btn btn-sm btn-info"><i class="fa fa-play"></i>&nbsp; Preview</a-->
+				<a href='#' onclick="addToCart('<# id #>', '<# snippet_count #>')" class="btn btn-sm btn-success"><i class="fa fa-download"></i>&nbsp; Purchase</a>
+			</td>
+		</tr>
+	<# end row #>
+
+	<# start footer #>
+	</table>
+</div>
+	<# end footer #>
+
+	<# no results #>
+	<hr />No Snippet Templates
+	<# end no results #>
+
+	<# end list #>
+	
+	
+</div>
+<section class="section-blue-divider"></section>
+
+<script type="text/javascript">
+function addToCart( snippetid, itemcount )
+{
+	if (confirm("This template contains " + itemcount + " Cloud Snippets. Do you want to add these Snippets to your account?"))
+	{
+		window.location = "/account/nh/add_snippet_to_cart?template_id=" + snippetid + "&account_id=<#[url.account_id]#>";
+	}
+}
+
+</script>

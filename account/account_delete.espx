@@ -1,0 +1,17 @@
+<# start list for accounts;
+	include when user_uuid is "<#[session.user_id]#>";
+	include when uuid is "<#[url.id]#>";
+	show 15 rows per page;
+#>
+<# start row #>
+    <# delete record for "accounts.<#[url.id]#>"; 
+            redirect to "/account/accounts";
+    #>
+<# end row #>
+<# no results #>
+            <?php
+            echo "You do not have access to this account";
+            exit;
+            ?>
+<# end no results #>
+

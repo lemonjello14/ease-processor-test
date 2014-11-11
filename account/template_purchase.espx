@@ -1,0 +1,72 @@
+<# apply snippet_templates.<#[url.template_id]#> as "template"; #>
+
+<# start list for accounts;
+	include when user_uuid is "<#[session.user_id]#>";
+	sort by domain, name;
+	save to account.options;
+#>
+<# start row #>
+<# if("<#[url.account_id]#>"=="<# id #>") {
+<option value="<# id #>" selected><# name as html #> (<# domain as html #>)</option>
+} else {
+<option value="<# id #>"><# name as html #> (<# domain as html #>)</option>
+}
+#>
+<# end row #>
+<# end list #>
+
+<?php
+$template_id = ease_get_value("url.template_id");
+//if there is no snippet ID, send them back to the store.
+if (! $template_id) {
+	header("Location: /account/new_snippet?account_id=$account_id");
+}
+?>
+
+<div class="container container_body">
+	<ol class="breadcrumb">
+		<li><a href="/account/">My Account</a></li>
+		<li><a href="new_snippet?account_id=<#[url.account_id]#>">New Snippet</a></li>
+		<li><a href="snippet_store?account_id=<#[url.account_id]#>">Snippet Store</a></li>
+		<li><a href="template_info?template_id=<#[url.template_id]#>&account_id=<#[url.account_id]#>">More Info</a></li>
+		<li>Confirm Purchase</li>
+	</ol>
+	<h3>Purchase "<#[template.name]#>"</h3>
+	<div class="mt10 mb20">Select which account you will add this Snippet Template too.</div>
+	<div class="form-horizontal">
+		<div class="form-group" id="account_warning" style="display:none;">
+			<div class="col-sm-offset-1 col-sm-8">
+				<div class="alert alert-danger alert-dismissible" role="alert">
+				  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				  <strong>Warning!</strong> An account is required to purchase this Snippet Template
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-2 control-label">Account</div>
+			<div class="col-sm-10">
+				<select class="form-control" style="width:300px;" id="account_id" required><option value=''>Choose an Account</option><#[account.options]#></select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<a href='#' class="btn btn-success" onclick="purchaseTemplate()"><i class="fa fa-download"></i>&nbsp; Purchase</a>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="section-blue-divider"></section>
+<script type="text/javascript">
+function purchaseTemplate()
+{
+	//confirm they selected an account
+	var account_id = document.getElementById("account_id").value;
+	if (! account_id)
+	{
+		document.getElementById("account_warning").style.display="block";
+		return false;
+	}
+
+	window.location = "/account/nh/add_snippet_to_cart?template_id=<#[url.template_id]#>&account_id=" + account_id ;
+}
+</script>

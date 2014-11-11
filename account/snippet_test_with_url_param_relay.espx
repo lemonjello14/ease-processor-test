@@ -1,0 +1,33 @@
+<# apply snippets.<#[url.ease_processor_snippet_id]#> as "snippet"; #>
+<div class="container container_body">
+	<h3>Testing Snippet "<a href='snippet?edit=<#[url.ease_processor_snippet_id as html]#>'><#[snippet.name as html]#></a>"</h3>
+
+	<hr />
+
+	<div id='my_div'></div>
+	<script type="text/javascript">
+		var ease_processor_response_element_id = 'my_div';
+		document.write(unescape("%3Cscript src='<#[system.https_host]#>/process?"
+		 + "ease_processor_snippet_id=<#[url.ease_processor_snippet_id as url]#>&"
+		 + window.location.search.split("?")[1] + "' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+
+	<hr />
+
+	Processed this HTML Snippet: <pre class='code' style='tab-size:4;'>&lt;div id='my_div'&gt;&lt;/div&gt;
+	&lt;script type="text/javascript"&gt;
+		var ease_processor_response_element_id = 'my_div';
+		document.write(unescape("%3Cscript src='<#[system.https_host]#>/process?"
+		 + "ease_processor_snippet_id=<#[url.ease_processor_snippet_id as url]#>&"
+		 + window.location.search.split("?")[1] + "' type='text/javascript'%3E%3C/script%3E"));
+	&lt;/script&gt;</pre>
+
+	<hr />
+
+	The External EASE Processor will process this EASE Snippet: <pre class='code'><#[snippet.ease_snippet as pre]#></pre>
+
+	<hr />
+
+	<a href='snippet?edit=<#[url.ease_processor_snippet_id as html]#>'>Form for editing this Snippet</a><br />
+</div>
+<section class="section-blue-divider"></section>

@@ -1,0 +1,28 @@
+<# if("<#[session.authenticated_user]#>" == ""){ #>
+
+<?php
+
+// force HTTPS
+if(strtolower($_SERVER['HTTPS'])!='on' && ease_get_value('system.domain')!='localhost') {
+	header("Location: https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}");
+}
+
+?>
+
+
+<div style='margin-top:7px; margin-bottom:15px;' id="restricted">To get started, please log in with your Google Plus Account. </div>
+
+<div id="signinButton">
+	<span class="g-signin"
+		data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"
+		data-clientid="<#[config.gapp_client_id]#>"
+		data-redirecturi="postmessage"
+		data-accesstype="offline"
+		data-cookiepolicy="single_host_origin"
+		data-callback="signInCallback">
+	</span>
+</div>
+
+<div id="result"></div>
+
+<# } #>

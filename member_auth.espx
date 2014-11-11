@@ -1,0 +1,12 @@
+<div class="container container_body">
+	<div class="panel panel-default col-md-6 col-md-offset-3">
+		<div class="panel-body text-center">
+			<h3 style='margin-bottom:15px;'>Welcome to the Cloudward Snippets</h3>
+		
+			<# include "auth.espx" #>
+			<# include "welcome.espx" #>
+		</div>
+	</div>
+</div>
+
+<section class="section-blue-divider"></section>

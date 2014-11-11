@@ -1,0 +1,21 @@
+<h3 style='margin-bottom:15px;'>Welcome to the EASE Processor Admin Console</h3>
+
+<div style='margin:0px; font-weight:bold;'>Accounts</div>
+<ul style='margin-top:3px;'>
+	<li><a href='accounts'>List of all Accounts</a></li>
+	<li><a href='account'>Form for adding a new Account</a></li>
+</ul>
+
+<div style='margin:0px; font-weight:bold;'>Snippets</div>
+<ul style='margin-top:3px;'>
+	<li><a href='snippets'>List of all Snippets</a></li>
+	<li><a href='snippet'>Form for adding a new Snippet</a></li>
+</ul>
+
+
+<div style='margin:0px; font-weight:bold;'>Templates</div>
+<ul style='margin-top:3px;'>
+	<li><a href="helper_templates">Script Helper</a></li>
+	<li><a href="snippet_templates">Snippet Store</a></li>
+	<li><a href="member_levels">Membership Levels</a></li>
+</ul>

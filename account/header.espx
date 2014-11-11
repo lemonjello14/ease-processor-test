@@ -1,0 +1,78 @@
+<# include "header_include.espx"; #>
+<!doctype html>
+<html itemscope itemtype="http://schema.org/Article">
+<head>
+	<meta name="google-site-verification" content="ZrVPowzuAEBsRQvLX9MsTRkP6fIeVYB7TJMLjMdl5As" />
+	<title>Cloudward Snippets</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+	<script src="/javascripts/bootstrap.js"></script>
+	<link href="/stylesheets/bootstrap.css" rel="stylesheet">
+	<link href="/stylesheets/font-awesome-4-2-0.css" rel="stylesheet">
+	<link href="/stylesheets/style.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/dataTables.bootstrap.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" charset="utf8" src="/javascripts/jquery.dataTables.js"></script>
+	<script type="text/javascript" charset="utf8" src="/javascripts/dataTables.bootstrap.js"></script>
+</head>
+<body>
+
+<header class="header wrapper-global clearfix" style="background-color:white;">
+	<a class="logo" href="/"><img style="padding-top:12px" src="/images/cloudward_logo.png" alt="Cloudward"></a>
+	<div class="navUser clearfix">
+			<nav>
+				<ul>
+					<li class="navUser-register"><a href="http://www.cloudward.com">Cloudward</a></li>
+					<li class="navUser-register"><a href="http://www.cloudward.com/support">Support</a></li>
+					<?php
+					if(isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user']) {
+						echo "							<li class='navUser-signIn'><a href='/logout.php'>Logout</a></li>";
+					} else {
+						echo "							<li class='navUser-signIn'><a href='/member_auth'>Log In</a></li>";
+					}
+					?>
+				</ul>
+			</nav>
+	</div>
+	<div class="navMain clearfix">
+		<nav>
+			<ul>
+				<!--li><a href='/'>Home</a></li-->
+				<?php
+					/*
+					figure out what page we are on so that we can hightlight the correct tab
+					*/
+					$zurl = parse_url($_SERVER['REQUEST_URI']);
+					$testpath = 'page:' . $zurl['path'];
+					$cquery = isset($zurl['query']) ? $zurl['query'] : '';
+					$home = '';
+					$snippets = '';
+					$profile = '';
+					$tools = '';
+					if($zurl['path']=='/account/' || $zurl['path']=='/account' || strpos($testpath, '/index')) {
+					    $home = 'active';
+					} elseif(strpos($testpath, '/snippets') || strpos($testpath, '/snippet') || strpos($testpath, '/new_snippet')) {
+					    $snippets = 'active';
+					} elseif(strpos($testpath, '/profile')) {
+					    $profile = 'active';
+					} elseif(strpos($testpath, '/tools')) {
+					    $tools = 'active';
+					}
+					if(isset($_SESSION['authenticated_user']) && $_SESSION['authenticated_user']) {
+						echo "							<li class='$home'><a href='/account/'>Account</a></li>";
+						echo "							<li class='$snippets'><a href='/account/snippets'>My Snippets</a></li>";
+						echo "							<li class='$profile'><a href='/account/profile'>Profile</a></li>";
+						echo "							<li class='$tools'><a href='/account/tools'>Help Tools</a></li>";
+						if(isset($_SESSION['ease_memberships.admins']) && $_SESSION['ease_memberships.admins']=='unlocked') {
+							echo "							<li><a href='/admin'>Admin</a></li>";
+						}
+					} else {
+						echo "							<li><a href='/member_auth'>Get Started</a></li>";
+					}
+				?>
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<div id="main_container" class="gradient-heading">

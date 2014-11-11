@@ -1,0 +1,75 @@
+<div class="container container_body">
+	<h3>Your Accounts</h3>
+
+	<# if("<#[url.get_started]#>" == "true"){ #>
+	Next, click your domain below and click activate.  This will give your EASE Snippets access to your Google Drive.  Once you have activated, you can click create snippet to create an EASE snippet.
+	<BR><BR>
+	<# } #>
+
+	<# start list for accounts;
+		include when user_uuid is "<#[session.user_id]#>";
+	#>
+
+	<# start header #>
+	<table class="table table-striped" id="accounts_table">
+		<thead>
+			<tr style='font-size:12pt;'>
+				<th>Name<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to edit)</span></th>
+				<th>Created On</th>
+				<th>Domain</th>
+				<th>Activated?</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+	<# end header #>
+
+	<# start row #>
+		<tr>
+			<td><a href='/account/account?edit=<# id #>'><# name as html #></a></td>
+			<td><?php echo date("m/d/Y h:i:s A",strtotime(ease_get_value('accounts.created_on'))); ?></td>
+			<td><# domain as html #></td>
+			<td style='text-align:center;'>
+				<# if("<# gapp_access_token_json #>"!="") {
+					Yes
+				} else {
+					No
+				} #>
+			</td>
+			<td>
+				<# if("<# gapp_access_token_json #>"=="") {
+					<a href='<#[system.https_host]#>/account_init?id=<# id #>&state=/account/accounts' class="btn btn-sm btn-success"><i class="fa fa-toggle-on"></i> activate</a>
+				}  #>
+				<a href='new_snippet?account_id=<# id #>' class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> add snippet</a>
+				<a href='snippets?account_id=<# id #>' class="btn btn-sm btn-primary"><i class="fa fa-list"></i> list snippets</a>
+				<a href='account_delete?id=<# id #>' onclick="return confirm('Confirm Delete?');" class="btn btn-sm btn-danger"><i class="fa fa-times"></i> delete</a>
+			</td>
+		</tr>
+	<# end row #>
+
+	<# start footer #>
+	</table>
+	<# end footer #>
+
+	<# no results #>
+	<hr />No Accounts
+	<# end no results #>
+
+	<# end list #>
+
+	<hr />
+
+	<a href='account' class="btn btn-primary"><i class="fa fa-plus"></i> Add New Account</a><br />
+</div>
+<section class="section-blue-divider"></section>
+
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#accounts_table').DataTable({"columns": [
+	  null,
+	  null,
+	  null,
+	  null,
+	  { "orderable": false, "searchable": false }
+	]});
+} );
+</script>

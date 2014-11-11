@@ -1,0 +1,64 @@
+<h3>List of all <a href='?'>Users</a></h3>
+
+<# if("<#[url.account_id]#>"<>"") { 
+<div style='margin-bottom:4px;'>Filtering by Account - <a href='?'>Clear Account Filter</a></div>
+} #>
+
+<# start list for users;
+	show 15 rows per page;
+#>
+
+<# start header #>
+<table class="table" id="users_table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Email Address</th>
+			<th>Name</th>
+			<th>UUID</th>
+			<th>Accounts and Snippets</th>
+		</tr>
+	</thead>
+<# end header #>
+
+<# start row #>
+	<tr>
+		<td><# id #></td>
+		<td><# email_address #></td>
+		<td><# name #></td>
+		<td><# uuid #></td>
+		<td><a href="/admin/accounts?user_uuid=<# uuid #>">Accounts</a>/<a href="/admin/snippets?user_uuid=<# uuid #>">Snippets</a></td>
+	</tr>
+<# end row #>
+
+<# start footer #>
+</table>
+<# end footer #>
+
+<# no results #>
+<hr />No Users
+<# end no results #>
+
+<# end list #>
+
+<hr />
+
+<# if("<#[url.account_id]#>"<>"") { 
+<a href='snippet?account_id=<#[url.account_id as url]#>'>Form for adding a new Snippet for this Account</a><br />
+} #>
+<a href='snippet'>Form for adding a new Snippet</a><br />
+<a href='account'>Form for adding a new Account</a><br />
+<a href='accounts'>List of all Accounts</a><br />
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#users_table').DataTable(
+	{"columns": [
+	  null,
+	  null,
+	  null,
+	  null,
+	  { "orderable": false }
+	]} 
+				);
+} );
+</script>

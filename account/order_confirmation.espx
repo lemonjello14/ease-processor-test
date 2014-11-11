@@ -1,0 +1,82 @@
+<# apply orders.<#[url.orderid]#> as "order"; #>
+
+
+<div class="container container_body">
+	<h3>Order Confirmation</h3>
+	<div class="mt10 mb20">
+		<# start list for cloned_snippets;
+			must relate cloned_snippets.new_snippetid to snippets.uuid;
+			must relate snippet_templates.uuid to snippets.templateid;
+            include when cloned_snippets.orderid = "<#[url.orderid]#>";
+			show 1 rows per page;
+			hide both pagers;
+        #>
+        <# start row #>
+            <# snippet_templates.instructions #>
+        <# end row #>
+		<# no results #>
+		The following snippets have been added to your account.
+		<# end no results #>
+ 		<# end list #>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-12 col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">New Snippets</div>
+						<div class="panel-body">
+			
+							<# start list for cloned_snippets;
+								must relate cloned_snippets.new_snippetid to snippets.uuid;
+					            include when cloned_snippets.orderid = "<#[url.orderid]#>";
+					        #>
+							<# start header #>
+								<ul>
+							<# end header #>
+					        <# start row #>
+					            <li><i class="fa fa-arrow-right"></i> &nbsp; <# snippets.name #></li><br>
+					        <# end row #>
+					        <# start footer #>
+								</ul>
+							<# end footer #>
+					        <# no results #>
+					            No Snippets Found
+					         <# end no results #>
+					        <# end list #>
+							<br><br>
+							<a href='/account/snippets' class="btn  btn-primary"><i class="fa fa-list"></i>&nbsp; My Snippets</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<# start list for cloned_snippets;
+						must relate cloned_snippets.new_snippetid to snippets.uuid;
+			            include when cloned_snippets.orderid = "<#[url.orderid]#>";
+						include when snippets.sortorder = "1";
+					#>
+					<# start row #>
+Copy this code to your webpage: <pre class='code' style='tab-size:4;'>&lt;div id='my_div'&gt;&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+	var ease_processor_response_element_id = 'my_div';
+	document.write(unescape("%3Cscript src='<#[system.https_host]#>/process?"
+	 + "cloudward_snippet_id=<# snippets.uuid #>&"
+	 + window.location.search.split("?")[1] + "' type='text/javascript'%3E%3C/script%3E"));
+&lt;/script&gt;</pre>
+					<a href='snippet_test?cloudward_snippet_id=<# snippets.uuid #>&account_id=<# snippets.account_id #>' class="btn btn-primary"><i class="fa fa-play"></i> Test This Snippet</a>
+					<# end row #>
+					<# end list #>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="section-blue-divider"></section>
+
+<# update record for "users.<#[session.user_id]#>" reference as "user1";
+	set user1.orderid to "";
+	set user1.xorderid to "";
+#>
+
+<# set session.orderid to ""; #>

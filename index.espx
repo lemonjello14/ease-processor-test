@@ -1,0 +1,24 @@
+<# redirect to "/account/index"; #>
+<section class="section-heading section-heading-home gradient-heading ie-gradient">
+	<div class="wrapper-global">
+		<div class="title-border">
+			<h1 class="title-main">Build <strong>dynamic</strong> webpages without a data base admin</h1>
+		</div>
+		<h2 class="title-main-sub">with the skills you have and the tools you know</h2>
+		<div class="img-heading">
+			<img alt="Web Business with Snippets" src="images/webbusiness.jpg">
+		</div>
+	</div>
+</section>
+<section class="section-white">
+	<div class="wrapper-global">
+		More content
+		<br><br><br><br><br><br><br>More content><br><br><br><br><br><br><br><br><br><br><br>More content
+	</div>
+</section>
+<section class="section-blue">
+	<div class="wrapper-global">
+		More content
+		<br><br><br><br><br><br><br>More content<br><br><br><br><br><br><br><br><br><br><br>More content
+	</div>
+</section>

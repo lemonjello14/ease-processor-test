@@ -1,0 +1,136 @@
+<# apply accounts.<#[url.account_id]#> as "account"; #>
+<# include "header_include.espx"; #>
+<div class="container container_body">
+        <div>
+			<h3>My Snippets</h3>
+
+			<# if("<#[url.account_id]#>"<>"") { 
+				<div style='margin-bottom:4px;'>
+					<div>
+						Filtering by Account "<#[account.name]#>" - <a href='?'>Clear Account Filter</a>
+					</div>
+			} #>
+			
+			<# start list for snippets;
+				relate account_id to accounts.uuid;
+				include when accounts.user_uuid is "<#[session.user_id]#>";
+				include when snippets.templateid = "";
+				include when account_id is "<#[url.account_id]#>" if set;
+			#>
+
+			<# start header #>
+			<table class="table table-striped" id="snippets_table">
+				<thead>
+				<tr>
+					<th style="width:20%;">Name<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to edit)</span></th>
+					<th style="width:15%;">Created On</th>
+					<th style="width:40%;">Account<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to filter)</span></th>
+					<th style="width:5%;">Hits</th>
+					<th style="width:20%;">Action</th>
+				</tr>
+				</thead>
+				<tbody>
+			<# end header #>
+
+			<# start row #>
+				<tr>
+					<td>
+						<# if("<# name #>" != ""){ 
+							<a href="snippet?edit=<# id #>&account_id=<# account_id #>"><# name as html #></a>
+						} else { 
+							<a href="snippet?edit=<# id #>&account_id=<# account_id #>"><# id #></a>
+						} #>
+					</td>
+					<td nowrap><?php echo date("m/d/Y h:i:s A",strtotime(ease_get_value('snippets.created_on'))); ?></td>
+					<td><a href='?account_id=<# accounts.id #>'><# accounts.name as html #><span style='padding-left:8px; font-size:8pt;'><# accounts.domain as html #></span></a></td>
+					<td><# hits as number #></td>
+					<td nowrap>
+						<a href='snippet_test?cloudward_snippet_id=<# id #>&account_id=<# account_id #>' class="btn btn-sm btn-primary"><i class="fa fa-play"></i> test</a>
+						<a href='snippet_hit_log?snippet_id=<# id #>&account_id=<# account_id #>' class="btn btn-sm btn-primary"><i class="fa fa-table"></i> hit log</a>
+						<a href='snippet_delete?id=<# id #>&account_id=<# account_id #>'  class="btn btn-sm btn-danger" onclick="return confirm('Confirm Delete?');"><i class="fa fa-times"></i> delete</a>
+					</td>
+				</tr>
+			<# end row #>
+
+			<# end list #>
+			
+			<# start list for snippets;
+				relate snippets.account_id to accounts.uuid;
+				relate snippets.templateid to snippet_templates.uuid;
+				include when accounts.user_uuid is "<#[session.user_id]#>";
+				include when snippets.templateid != "";
+				include when account_id is "<#[url.account_id]#>" if set;
+				sort by snippets.sortorder as number;
+			#>
+			<# start row #>
+				<# if("<# rownumber #>" = "1") {
+					set <# newtempid #> to "<# snippet_templates.uuid #>";
+					set <# newtempname #> to "<# snippet_templates.name #>";
+					set <# bgcolor #> to "#DDD";
+				}
+				#>
+				<# if("<# newtempid #>" != "<# snippet_templates.uuid #>") {
+					set <# recordcount #> to 1;
+					set <# newtempid #> to "<# snippet_templates.uuid #>";
+					set <# newtempname #> to "<# snippet_templates.name #>";
+				}
+				else
+				{
+					set <# recordcount #> to <# recordcount #> + 1;
+				}
+				#>
+				<tr>
+					<td style="background-color:#EEE;">
+						<# newtempname #><br>
+						&nbsp;&nbsp;&nbsp;<# recordcount #> - 
+						<# if("<# name #>" != ""){ 
+							<a href="snippet?edit=<# id #>&account_id=<# account_id #>"><# name as html #></a>
+						} else { 
+							<a href="snippet?edit=<# id #>&account_id=<# account_id #>"><# id #></a>
+						} #>
+					</td>
+					<td style="background-color:#EEE;" nowrap><?php echo date("m/d/Y h:i:s A",strtotime(ease_get_value('snippets.created_on'))); ?></td>
+					<td style="background-color:#EEE;"><a href='?account_id=<# accounts.id #>'><# accounts.name as html #><span style='padding-left:8px; font-size:8pt;'><# accounts.domain as html #></span></a></td>
+					<td style="background-color:#EEE;"><# hits as number #></td>
+					<td style="background-color:#EEE;" nowrap>
+						<a href='snippet_test?cloudward_snippet_id=<# id #>&account_id=<# account_id #>' class="btn btn-sm btn-primary"><i class="fa fa-play"></i> test</a>
+						<a href='snippet_hit_log?snippet_id=<# id #>&account_id=<# account_id #>' class="btn btn-sm btn-primary"><i class="fa fa-table"></i> hit log</a>
+						<a href='snippet_delete?id=<# id #>&account_id=<# account_id #>'  class="btn btn-sm btn-danger" onclick="return confirm('Confirm Delete?');"><i class="fa fa-times"></i> delete</a>
+					</td>
+				</tr>
+			<# end row #>
+
+			<# start footer #>
+				</tbody>
+			</table>
+			<# end footer #>
+
+			<# no results #>
+				</tbody>
+			</table>
+			<# end no results #>
+
+			<# end list #>
+			
+			<hr />
+
+			<# if("<#[url.account_id]#>"<>"") { 
+				<a href='new_snippet?account_id=<#[url.account_id as url]#>' class="btn btn-primary"><i class="fa fa-plus"></i> Add a Snippet</a><br />
+			} else {
+				<a href='new_snippet' class="btn btn-primary"><i class="fa fa-plus"></i> Add a Snippet</a><br />
+			}
+			#>
+	</div>
+</div>
+<section class="section-blue-divider"></section>
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#snippets_table').DataTable({"columns": [
+	  null,
+	  null,
+	  null,
+	  null,
+	  { "orderable": false, "searchable": false }
+	]});
+} );
+</script>

@@ -1,0 +1,9 @@
+<?php
+
+$result = ease_db_query("SELECT * FROM ease_google_spreadsheets LIMIT 1;");
+
+while($row = ease_db_fetch($result)) {
+	ease_html_dump($row);
+}
+
+?>

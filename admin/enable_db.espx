@@ -1,0 +1,5 @@
+<# restrict access to admins using admin_auth #>
+
+<# update record for "accounts.<#[url.id]#>"; 
+	set enable_db to "true";
+#>

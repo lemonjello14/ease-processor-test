@@ -1,0 +1,34 @@
+<div class="container container_body">
+	<h3>Help Tools</h3>
+	
+	<ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#sectionA">Snippet Help</a></li>
+        <li><a data-toggle="tab" href="#sectionB">Ease Doc</a></li>
+        <li><a data-toggle="tab" href="#sectionC">Style/CSS</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="sectionA" class="tab-pane fade in active">
+			<div class="panel panel-default">
+				<div class="panel-body">
+            		<h3>General Snippet Instructions</h3>
+		            <div id='my_div'><div class="text-center" style="width:100%;"><img src="/images/ajax-loader.gif"></div></div>
+					<script type="text/javascript">
+						var ease_processor_response_element_id = 'my_div';
+						document.write(unescape("%3Cscript src='https://snippets.cloudward.com/process?"
+						 + "cloudward_snippet_id=227807453afab6a9de38d710713e193c&"
+						 + window.location.search.split("?")[1] + "' type='text/javascript'%3E%3C/script%3E"));
+					</script>
+				</div>
+			</div>
+        </div>
+        <div id="sectionB" class="tab-pane fade">
+            <h3>EASE Documentation</h3>
+            <p>Coming Soon.</p>
+        </div>
+        <div id="sectionC" class="tab-pane fade">
+            <h3>Style and CSS Help</h3>
+            <p>Coming Soon.</p>
+        </div>
+    </div>
+
+</div>

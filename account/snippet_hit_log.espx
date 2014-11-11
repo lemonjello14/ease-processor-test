@@ -1,0 +1,58 @@
+<# if("<#[url.snippet_id]#>"=="") {
+	redirect to "/snippets";
+} #>
+
+<div class="container container_body">
+	<# start list for snippets;
+		relate account_id to accounts.uuid;
+		include when accounts.user_uuid is "<#[session.user_id]#>";
+		include when uuid is "<#[url.snippet_id]#>";
+		show 15 rows per page;
+	#>
+	<# no results #>
+	    <?php
+	    echo "You do not have access to this snippet";
+	    exit;
+	    ?>
+	<# end no results #>
+	<# end list #>
+
+	<h3>Snippet Hit Log</a></h3>
+
+	<# start list for snippet_hit_log;
+		include when snippet_id is "<#[url.snippet_id]#>";
+		sort by created_on in descending order;
+		show 20 rows per page;
+	#>
+
+	<# start header #>
+	<table border='1' cellpadding='2' cellspacing='0'>
+		<tr style='font-size:12pt;'>
+			<th>Time</th>
+			<th>Snippet ID<span style='font-weight:normal; font-size:9pt; padding-left:10px;'>(click to filter)</span></th>
+		</tr>
+	<# end header #>
+
+	<# start row #>
+		<tr style='font-size:10pt;'>
+			<td style='padding-top:3px; padding-left:5px; padding-right:5px; font-size:9pt;'><# created_on #></td>
+			<td style='padding-left:4px; padding-right:7px;'><a href='?snippet_id=<# snippet_id #>'><# snippet_id as html #></a></td>
+		</tr>
+	<# end row #>
+
+	<# start footer #>
+	</table>
+	<# end footer #>
+
+	<# no results #>
+	<hr />No Snippet Hit Logs
+	<# end no results #>
+
+	<# end list #>
+
+	<hr />
+
+	<a href='snippet?edit=<#[url.snippet_id as url]#>&account_id=<#[url.account_id]#>'>Form for editing this Snippet</a><br />
+
+</div>
+<section class="section-blue-divider"></section>

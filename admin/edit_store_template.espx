@@ -1,0 +1,211 @@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> 
+ <style>
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: url("images/ui-bg_glass_75_e6e6e6_1x400.png") repeat-x scroll 50% 50% #e6e6e6;
+    border: 1px solid #d3d3d3;
+    color: #555555;
+    font-weight: normal;
+}
+.ui-sortable-handle {
+}
+#sortable { 
+	list-style-type: none; 
+	margin: 0; 
+	padding: 0; 
+	width: 95%; 
+}
+#sortable li { 
+	margin: 0 5px 5px 5px; 
+	padding: 5px;  
+	height: 1.5em; 
+}
+html>body #sortable li { 
+	height: 2.2em; 
+	line-height: 1.5em; 
+}
+.ui-state-highlight { 
+	height: 2.2em; 
+	line-height: 1.5em; 
+}
+</style>
+
+<script>
+$(function() {
+	$( "#sortable" ).sortable({
+		placeholder: "ui-state-highlight"
+	});
+	$( "#sortable" ).disableSelection();
+});
+</script>
+
+<ol class="breadcrumb">
+  <li><a href="snippet_templates">Snippet Templates</a></li>
+  <li>Edit Snippet Template</li>
+</ol>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Basic Template Information</h3>
+		  </div>
+			<div class="panel-body">
+				<# start form for snippet_templates <#[url.templateid]#>;
+					when creating set snippet_count to "0";
+					when creating set user_count to "0";
+					when done redirect to "/admin/edit_store_template?templateid=<# form.id #>";
+				#>
+				<div class="form-group">
+					Template Name<br />
+					<input type='text' class="form-control" style='width:95%;' required <# name #> />
+				</div>
+
+				<div class="form-group">
+					Template Short Description
+					<textarea class="form-control" <# description #> style="width:95%; height:120px;" required></textarea>
+				</div>
+				
+				<div class="form-group">
+					Price<br />
+					<input type='text' class="form-control" type="number" style='width:100px;' required <# price #> />
+				</div>
+				<div class="form-group">
+					SKU<br />
+					<input type='text' class="form-control"  style='width:100px;' required <# sku #> />
+				</div>
+				
+				<div class="form-group">
+					Template Instructions
+					<textarea class="form-control" <# instructions #> style="width:95%; height:120px;" required placeholder="What should the user do next after we clone the snippets into their account?"></textarea>
+				</div>
+				
+				<div class="form-group">
+					Status <br />
+					<select <# status #> class="form-control" style="width:100px;">
+					    <option value="active" >Active</option>
+					    <option value="inactive" >Inactive</option>    
+					</select>
+				</div>
+		
+				<div style='margin-top:8px; text-align:right;'>
+					<input type='button' class="btn btn-primary" <# Create button #> />
+					<input type='button' class="btn btn-primary" <# Update button #> />
+				</div>
+				<# end form #>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Snippets in this Template</h3>
+		  </div>
+			<div class="panel-body">
+			<# start list for snippet_template_ids;
+				must relate snippet_template_ids.snippet_id to snippets.uuid;
+				include when snippet_template_ids.template_id="<#[url.templateid]#>";
+				order by snippet_template_ids.sortorder as number;
+			#>
+
+				<# start header #>
+				<table class="table table-striped" id="snippets_table">
+					<thead>
+					<tr>
+						<th width="330px">Name</th>
+						<th width="170px">Action</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td colspan="2">
+							<ul id="sortable">
+				<# end header #>
+
+				<# start row #>
+					<li class="ui-state-default" id="item-<# uuid #>" >
+						<div class="row">
+							<div class="col-md-8"><i class="fa fa-arrows-v"></i> <# snippets.name as html #></div>
+							<div class="col-md-4">
+								<a href='/admin/noheader/remove_template_snippet?recordid=<# id #>&templateid=<#[url.templateid]#>'  class="btn btn-xs btn-danger" onclick="return confirm('Confirm Remove?');"><i class="fa fa-times"></i> Remove</a>
+							</div>
+						</div>
+					</li>
+				<# end row #>
+
+				<# start footer #>
+							</ul>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				<# end footer #>
+
+				<# no results #>
+				No Snippets
+				<# end no results #>
+
+				<# end list #>
+				
+				<hr>
+				<# if ("<#[url.templateid]#>" == "" or "<#[url.templateid]#>" == "0") {
+					set hide_list to "none";
+				} else {
+					set hide_list to "block";
+				} #>
+				
+				<div class="form-group" style="display:<#[hide_list]#>;">
+					Add a Snippet to this template <br />
+					<div class="row">
+						<div class="col-md-8">
+							<select id="newsnippet" class="form-control">
+							    <option value="" >Choose a Snippet</option>
+							    <# start list for snippets;
+									include when templateid = "";
+									include when status = "active";
+									include when cloneable = "true";
+									order by snippets.name;
+								#>
+								<# start row #>
+									<option value="<# id #>" ><# name as html #></option>
+								<# end row #>
+								<# no results #>
+									<option value="" >No Snippets Found</option>
+								<# end no results #>
+								<# end list #>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-primary" onclick="addSnippet()"><i class="fa fa-plus"></i>&nbsp; Add</button>
+						<div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function addSnippet()
+{
+	var snippetid = document.getElementById("newsnippet").value;
+	var templateid="<#[url.templateid]#>";
+	if (! snippetid || ! templateid) return false;
+	window.location="/admin/noheader/add_template_snippet?snippetid=" + snippetid + "&templateid=" + templateid;
+}
+
+$('#sortable').sortable({
+	axis: 'y',
+	update: function (event, ui) {
+		var data = $(this).sortable('serialize');
+		// POST to server using $.post or $.ajax
+		$.ajax({
+			data: data,
+			type: 'POST',
+			url: '/admin/noheader/update_snippet_order'
+		});
+	}
+});
+</script>
+

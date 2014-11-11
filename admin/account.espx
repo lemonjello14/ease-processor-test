@@ -1,0 +1,49 @@
+<h3>Form for <a href='accounts'>Accounts</a></h3>
+<# start list for users;
+	sort by last_name, email_address;
+	save to users.options;
+#>
+<# start row #>
+<option value="<# uuid #>" selected><# last_name as html #>, <# first_name as html #> :: <# email_address as html #></option>
+#>
+<# end row #>
+<# end list #>
+
+<# start form for accounts <#[url.edit]#>;
+	when deleting call confirm('Confirm Delete?');
+	when done redirect to "/admin/accounts?index=<# form.id #>";
+#>
+
+<div>
+	Name<br />
+	<input class="form-control" type='text' style='width:220px;' <# name #> /><br />
+</div>
+
+<div style='margin-top:10px;'>
+	Domain<br />
+	<input class="form-control" type='text' style='width:220px;' <# domain #> /><br />
+</div>
+
+<div style='margin-top:10px;'>
+	User
+	<select class="form-control" style="width:25%" <# user_uuid #> required><option value=''>Choose a User</option><#[users.options]#></select>
+</div>
+
+<input type='hidden' <# gapp_access_token_json #> />
+<input type='hidden' <# gapp_access_token #> />
+<input type='hidden' <# gapp_expire_time #> />
+<input type='hidden' <# gapp_refresh_token #> />
+
+<div style='margin-top:8px; text-align:right;'>
+	<input type='button' class="btn btn-primary" <# Create button #> />
+	<input type='button' class="btn btn-primary" <# Update button #> />
+	<input type='button' class="btn btn-danger" <# Delete button #> />
+</div>
+
+<# end form #>
+
+<hr />
+
+<a href='accounts'>List of all Accounts</a><br />
+<a href='snippets'>List of all Snippets</a><br />
+<a href='snippet'>Form for adding a new Snippet</a><br />

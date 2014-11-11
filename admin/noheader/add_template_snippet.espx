@@ -1,0 +1,40 @@
+<# apply snippet_templates.<#[url.templateid]#> as "template"; #>
+
+<#
+set snip.count to <#[template.snippet_count]#> + 1;
+#>
+
+<!-- add the snippet to the template if it is not already added -->
+<# start list for snippet_template_ids;
+	include when template_id is "<#[url.templateid]#>";
+	include when snippet_id is "<#[url.snippetid]#>";
+#>
+
+<# no results #>
+	<# create new record for "snippet_template_ids" reference as "templateid";
+	    set templateid.template_id to "<#[url.templateid]#>";
+	    set templateid.snippet_id to "<#[url.snippetid]#>";
+		set templateid.sortorder to "<#[snip.count]#>";
+	#>
+<# end no results #>
+
+<# end list #>
+
+
+<!-- Update the snippet count in the template-->
+<# start list for snippet_template_ids;
+	include when template_id is "<#[url.templateid]#>";
+#>
+<# start row #>
+	<#	
+ 		set <# total_count #> to <# total_count #> + 1;
+	#>
+<# end row #>
+<# start footer #>
+	<# update record for "snippet_templates.<#[url.templateid]#>" reference as "template";
+	    set template.snippet_count to "<# total_count as number #>";
+	#>
+<# end footer #>
+<# end list #>
+
+<# redirect to "/admin/edit_store_template?templateid=<#[url.templateid]#>"; #>

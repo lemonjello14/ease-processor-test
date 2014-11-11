@@ -1,0 +1,10 @@
+<# if ( "<#[url.cartid]#>" == "" ) {
+    redirect to "/account/cart";
+}
+#>
+
+<# delete record for "cart.<#[url.cartid]#>"; #>
+
+<#
+    redirect to "/account/cart";
+#>

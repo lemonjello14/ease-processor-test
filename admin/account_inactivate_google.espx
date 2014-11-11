@@ -1,0 +1,8 @@
+<# restrict access to admins using admin_auth #>
+
+<# update record for "accounts.<#[url.id]#>"; 
+	set gapp_access_token_json to "";
+	set gapp_access_token to "";
+	set gapp_expire_time to "";
+	set gapp_refresh_token to "";
+#>

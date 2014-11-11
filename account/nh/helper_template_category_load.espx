@@ -1,0 +1,8 @@
+<# start list for helper_templates;
+	sort by display_order;
+	include when active is "1" and category is "<#[url.category_id]#>";
+#>
+<# start row #>
+	<a href="#" onclick="loadHelperScript('<#id#>');"><# name #></a><BR>
+<# end row #>
+<# end list #>
